@@ -11,9 +11,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @Data
-@SuperBuilder
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
 @Table(name="users")
@@ -24,15 +21,11 @@ public abstract class User implements Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
-	
-	@Column(
-		length = 50,
-		unique = true,
-		nullable = false
-			)
+	@Column(nullable=false,unique=true)
 	private String userName;
-	private String password;
 	@Column(nullable=false)
+	private String password;
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date lastSession;
 	

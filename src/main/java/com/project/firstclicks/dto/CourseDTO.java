@@ -1,7 +1,7 @@
 package com.project.firstclicks.dto;
 
 public record CourseDTO(
-		String tutorId,
+		String tutorid,
 		String name,
 		String description	
 		) {

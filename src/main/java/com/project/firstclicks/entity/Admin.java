@@ -4,6 +4,7 @@ package com.project.firstclicks.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
 @Data
 @Entity

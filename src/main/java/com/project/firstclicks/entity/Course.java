@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import org.hibernate.annotations.Formula;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,8 +31,10 @@ public class Course implements Serializable{
 	@ManyToOne
 	@JoinColumn(name="tutor_id")
 	private Tutor tutor;
+	@Column(nullable=false)
 	private String name;
 	private Boolean isActive;
+	@Column(nullable=false)
 	private String description;
 	@Formula(value="SELECT COUNT(*) FROM student_course AS sc WHERE tutor_id=sc.tutor_id AND id=sc.id")
 	private Integer studentNumber;
