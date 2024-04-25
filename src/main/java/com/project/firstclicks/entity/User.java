@@ -1,9 +1,8 @@
-package com.project.firstclicks.entity.user;
+package com.project.firstclicks.entity;
 
 
-import java.time.LocalDateTime;
-
-import com.project.firstclicks.entity.role.Role;
+import java.io.Serializable;
+import java.util.Date;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -18,21 +17,27 @@ import lombok.experimental.SuperBuilder;
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
 @Table(name="users")
-public class User {
+public abstract class User implements Serializable{
+	
+	private static final long serialVersionUID = 7495946852773018475L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	
 	@Column(
 		length = 50,
-		unique = true
+		unique = true,
+		nullable = false
 			)
 	private String userName;
 	private String password;
-	private LocalDateTime createdAt;
-	private LocalDateTime lastSession;
+	@Column(nullable=false)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date lastSession;
 	
 	@ManyToOne
 	@JoinColumn(name="role_id")
 	private Role role;
+	
 }

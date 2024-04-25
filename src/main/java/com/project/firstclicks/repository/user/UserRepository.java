@@ -1,11 +1,11 @@
 package com.project.firstclicks.repository.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.NoRepositoryBean;
 
-import com.project.firstclicks.entity.user.User;
+import com.project.firstclicks.entity.User;
 
-@Repository
+@NoRepositoryBean
 public interface UserRepository extends JpaRepository<User, Integer> {
 
 }
