@@ -1,6 +1,7 @@
 package com.project.firstclicks.controller.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.project.firstclicks.dto.UserClientDTO;
@@ -12,7 +13,7 @@ import com.project.firstclicks.repository.user.TutorRepository;
 
 //Aqui se almacenan los metodos de controller
 @Service
-public class UserService {
+public class UserService implements {
 	
 	@Autowired
 	RoleRepository roleRepository;
@@ -20,12 +21,14 @@ public class UserService {
 	TutorRepository tutorRepository;
 	@Autowired
 	StudentRepository studentRepository;
+	@Autowired
+	PasswordEncoder passwordEncoder;
 	
 	public Tutor toTutor(UserClientDTO dto) {
 		Tutor newTutor = new Tutor();
 		
 		newTutor.setUserName(dto.username());
-		newTutor.setPassword(dto.password());
+		newTutor.setPassword(passwordEncoder.encode(dto.password()));
 		newTutor.setFirstName(dto.firstname());
 		newTutor.setLastName(dto.lastname());
 		newTutor.setRole(roleRepository.getReferenceById(dto.roleId()));
@@ -44,7 +47,7 @@ public class UserService {
 		Student newStudent = new Student();
 		
 		newStudent.setUserName(dto.username());
-		newStudent.setPassword(dto.password());
+		newStudent.setPassword(passwordEncoder.encode(dto.password()));
 		newStudent.setFirstName(dto.firstname());
 		newStudent.setLastName(dto.lastname());
 		newStudent.setRole(roleRepository.getReferenceById(dto.roleId()));

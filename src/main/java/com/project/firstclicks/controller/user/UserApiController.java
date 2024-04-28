@@ -15,14 +15,15 @@ import com.project.firstclicks.repository.user.RoleRepository;
 import com.project.firstclicks.repository.user.TutorRepository;
 
 //Con el API controller conectamos front con back.
+//Aqui se hace el Registration
 @RestController
 public class UserApiController {
 	
 	@Autowired
 	UserService userService;
 
-	//Test add Tutor
-	@PostMapping("/api/newTutor")
+	//Register Tutor
+	@PostMapping(UserWebMapController.USER_API_NEW_TUTOR)
 	public @ResponseBody ResponseEntity<UserClientDTO> newTutor(@RequestBody UserClientDTO dto){
 		Tutor newTutor = userService.toTutor(dto);
 		userService.addTutor(newTutor);

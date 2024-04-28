@@ -9,7 +9,7 @@ import lombok.experimental.SuperBuilder;
 @Data
 @Entity
 @Table(name="admins")
-public class Admin extends User{
+public class Admin extends AppUser{
 	
 	private static final long serialVersionUID = -372916635918377201L;
 

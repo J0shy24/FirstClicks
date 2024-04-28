@@ -15,7 +15,7 @@ import lombok.experimental.SuperBuilder;
 @Entity
 @Table(name="clients")
 @Inheritance (strategy = InheritanceType.JOINED)
-public abstract class Client extends User{
+public abstract class Client extends AppUser{
 	private static final long serialVersionUID = -2562887369200409956L;
 	
 	@Column(nullable=false)

@@ -4,6 +4,8 @@ package com.project.firstclicks.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.project.firstclicks.repository.user.RoleRepository;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,7 +16,7 @@ import lombok.experimental.SuperBuilder;
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
 @Table(name="users")
-public abstract class User implements Serializable{
+public abstract class AppUser implements Serializable{
 	
 	private static final long serialVersionUID = 7495946852773018475L;
 
@@ -32,5 +34,9 @@ public abstract class User implements Serializable{
 	@ManyToOne
 	@JoinColumn(name="role_id")
 	private Role role;
+	
+	/*public Role getRole() {
+		return this.role;
+	}*/
 	
 }
