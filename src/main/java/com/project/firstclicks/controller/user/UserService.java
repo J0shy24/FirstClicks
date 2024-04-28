@@ -13,7 +13,7 @@ import com.project.firstclicks.repository.user.TutorRepository;
 
 //Aqui se almacenan los metodos de controller
 @Service
-public class UserService implements {
+public class UserService{
 	
 	@Autowired
 	RoleRepository roleRepository;
