@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.project.firstclicks.dto.UserClientDTO;
 import com.project.firstclicks.entity.Student;
 import com.project.firstclicks.entity.Tutor;
+import com.project.firstclicks.entity.AppUser;
 import com.project.firstclicks.repository.user.RoleRepository;
 import com.project.firstclicks.repository.user.StudentRepository;
 import com.project.firstclicks.repository.user.TutorRepository;
@@ -27,7 +28,7 @@ public class UserService{
 	public Tutor toTutor(UserClientDTO dto) {
 		Tutor newTutor = new Tutor();
 		
-		newTutor.setUserName(dto.username());
+		newTutor.setUsername(dto.username());
 		newTutor.setPassword(passwordEncoder.encode(dto.password()));
 		newTutor.setFirstName(dto.firstname());
 		newTutor.setLastName(dto.lastname());
@@ -46,7 +47,7 @@ public class UserService{
 		
 		Student newStudent = new Student();
 		
-		newStudent.setUserName(dto.username());
+		newStudent.setUsername(dto.username());
 		newStudent.setPassword(passwordEncoder.encode(dto.password()));
 		newStudent.setFirstName(dto.firstname());
 		newStudent.setLastName(dto.lastname());

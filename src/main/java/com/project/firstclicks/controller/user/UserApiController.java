@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.project.firstclicks.dto.UserClientDTO;
 import com.project.firstclicks.entity.Tutor;
-import com.project.firstclicks.entity.User;
 import com.project.firstclicks.repository.user.RoleRepository;
 import com.project.firstclicks.repository.user.TutorRepository;
 

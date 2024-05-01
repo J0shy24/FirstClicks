@@ -16,7 +16,7 @@ import lombok.experimental.SuperBuilder;
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
 @Table(name="users")
-public abstract class AppUser implements Serializable{
+public class AppUser implements Serializable{
 	
 	private static final long serialVersionUID = 7495946852773018475L;
 
@@ -24,7 +24,7 @@ public abstract class AppUser implements Serializable{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	@Column(nullable=false,unique=true)
-	private String userName;
+	private String username;
 	@Column(nullable=false)
 	private String password;
 
@@ -35,8 +35,8 @@ public abstract class AppUser implements Serializable{
 	@JoinColumn(name="role_id")
 	private Role role;
 	
-	/*public Role getRole() {
+	public Role getRole() {
 		return this.role;
-	}*/
+	}
 	
 }
