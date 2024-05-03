@@ -5,7 +5,8 @@ import org.springframework.stereotype.Repository;
 
 import com.project.firstclicks.entity.Student;
 
+
 @Repository
-public interface StudentRepository extends JpaRepository<Student, Integer>{
+public interface StudentRepository extends JpaRepository<Student,Integer>{
 
 }

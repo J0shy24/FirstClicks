@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.project.firstclicks.entity.AppUser;
 
 @Repository
-public interface UserRepository extends JpaRepository<AppUser, Integer> {
-
-		Optional<AppUser> findByUsername(String username);
+public interface AppUserRepository extends JpaRepository<AppUser, Integer> {
+	
+	Optional<AppUser> findByUsername(String username);
 }
