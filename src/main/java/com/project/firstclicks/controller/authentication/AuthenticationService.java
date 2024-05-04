@@ -14,17 +14,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.project.firstclicks.repository.user.AppUserRepository;
-import com.project.firstclicks.repository.user.ClientRepository;
-import com.project.firstclicks.repository.user.RoleRepository;
-import com.project.firstclicks.repository.user.StudentRepository;
-import com.project.firstclicks.repository.user.TutorRepository;
 import com.project.firstclicks.security.JwtService;
 
 import jakarta.mail.MessagingException;
-
-import com.project.firstclicks.repository.user.TokenRepository;
-
 import lombok.RequiredArgsConstructor;
 
 import com.project.firstclicks.email.EmailService;
@@ -34,6 +26,12 @@ import com.project.firstclicks.entity.Client;
 import com.project.firstclicks.entity.Student;
 import com.project.firstclicks.entity.Token;
 import com.project.firstclicks.entity.Tutor;
+import com.project.firstclicks.repository.AppUserRepository;
+import com.project.firstclicks.repository.ClientRepository;
+import com.project.firstclicks.repository.RoleRepository;
+import com.project.firstclicks.repository.StudentRepository;
+import com.project.firstclicks.repository.TokenRepository;
+import com.project.firstclicks.repository.TutorRepository;
 
 @Service
 @RequiredArgsConstructor

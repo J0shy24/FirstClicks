@@ -1,4 +1,4 @@
-package com.project.firstclicks.repository.user;
+package com.project.firstclicks.repository;
 
 import java.util.Optional;
 
