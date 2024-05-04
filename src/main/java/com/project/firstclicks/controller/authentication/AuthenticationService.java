@@ -2,15 +2,24 @@ package com.project.firstclicks.controller.authentication;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.project.firstclicks.repository.user.AppUserRepository;
+import com.project.firstclicks.repository.user.ClientRepository;
 import com.project.firstclicks.repository.user.RoleRepository;
 import com.project.firstclicks.repository.user.StudentRepository;
 import com.project.firstclicks.repository.user.TutorRepository;
+import com.project.firstclicks.security.JwtService;
 
 import jakarta.mail.MessagingException;
 
@@ -18,9 +27,9 @@ import com.project.firstclicks.repository.user.TokenRepository;
 
 import lombok.RequiredArgsConstructor;
 
-import com.project.firstclicks.dto.RequestUserClientDTO;
 import com.project.firstclicks.email.EmailService;
 import com.project.firstclicks.email.EmailTemplateName;
+import com.project.firstclicks.entity.AppUser;
 import com.project.firstclicks.entity.Client;
 import com.project.firstclicks.entity.Student;
 import com.project.firstclicks.entity.Token;
@@ -35,7 +44,10 @@ public class AuthenticationService {
 	private final TutorRepository tRepository;
 	private final StudentRepository sRepository;
 	private final TokenRepository tokenRepository;
+	private final ClientRepository clientRepository;
 	private final EmailService emailService;
+	private final AuthenticationManager authenticationManager;
+	public final JwtService jwtService;
 	
 	@Value("${application.mailing.frontend.activation-url}")
 	private String activationURL;
@@ -108,6 +120,45 @@ public class AuthenticationService {
 		
 	}
 	
+	public AuthenticationResponse authenticate(AuthenticationRequestDTO request) {
+		var auth = authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(
+							request.getUserName(),
+							request.getPassword()
+							)
+				);
+		var claims = new HashMap<String,Object>();
+		var user = ((Client)auth.getPrincipal());
+		claims.put("fullname", user.getFullName());
+		var jwtToken = jwtService.generateToken(claims,user);
+		
+		return AuthenticationResponse.builder().token(jwtToken).build();
+	}
+	
+	//Activate tras enviar el email.
+	@Transactional
+	public void activateAccount(String token) throws MessagingException {
+		Token savedToken = tokenRepository.findByToken(token)
+				.orElseThrow(()->new RuntimeException("Invalid Token"));
+		
+		//Si el token se caduca se envia una nueva.
+		if(LocalDateTime.now().isAfter(savedToken.getExpiresAt())) {
+			sendEmailValidation(savedToken.getUser());
+			throw new RuntimeException("Expired token. A new token had been sent.");
+		}
+		
+		var user = clientRepository.findById(savedToken.getUser().getId())
+				.orElseThrow(()-> new UsernameNotFoundException("User not found"));
+		
+		user.setEnabled(true);
+		clientRepository.saveAndFlush(user);
+		savedToken.setValidatedAt(LocalDateTime.now());
+		tokenRepository.saveAndFlush(savedToken);
+		
+	}
+
+	
+	//Private Service Methods
 	//Envia el email de activación de cuenta.
 	private void sendEmailValidation(Client client) throws MessagingException {
 		var newToken = generateAndSaveActivationToken(client);

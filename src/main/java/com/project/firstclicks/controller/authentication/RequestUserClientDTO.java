@@ -1,4 +1,4 @@
-package com.project.firstclicks.dto;
+package com.project.firstclicks.controller.authentication;
 
 //DTO para Estudiantes y Tutores
 import java.time.LocalDate;

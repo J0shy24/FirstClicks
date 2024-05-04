@@ -27,5 +27,5 @@ public class Token {
 	
 	@ManyToOne
 	@JoinColumn(name="user_id",nullable=false)
-	private AppUser user;
+	private Client user;
 }
