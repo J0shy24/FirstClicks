@@ -7,5 +7,5 @@ import com.project.firstclicks.entity.Client;
 
 @Repository
 public interface ClientRepository extends JpaRepository<Client,Integer>{
-
+	boolean existsByEmail(String email);
 }

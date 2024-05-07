@@ -12,6 +12,7 @@ import com.project.firstclicks.dto.UserClientDTO;
 import com.project.firstclicks.entity.Tutor;
 import com.project.firstclicks.repository.user.RoleRepository;
 import com.project.firstclicks.repository.user.TutorRepository;
+import com.project.firstclicks.service.user.UserService;
 
 //Con el API controller conectamos front con back.
 //Aqui se hace el Registration

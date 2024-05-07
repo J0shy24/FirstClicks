@@ -2,6 +2,7 @@ package com.project.firstclicks.entity;
 
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import com.project.firstclicks.repository.user.RoleRepository;
@@ -29,14 +30,12 @@ public class AppUser implements Serializable{
 	private String password;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date lastSession;
+	private LocalDateTime lastSession;
 	
-	@ManyToOne
-	@JoinColumn(name="role_id")
-	private Role role;
-	
-	public Role getRole() {
-		return this.role;
-	}
-	
+	  
+	public enum Role {
+	        ADMIN,
+	        USER,
+	        TUTOR
+	    }
 }

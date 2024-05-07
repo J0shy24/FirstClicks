@@ -1,4 +1,4 @@
-package com.project.firstclicks.controller.user;
+package com.project.firstclicks.service.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,14 +22,14 @@ public class UserService{
 	TutorRepository tutorRepository;
 	@Autowired
 	StudentRepository studentRepository;
-	@Autowired
-	PasswordEncoder passwordEncoder;
+//	@Autowired
+//	PasswordEncoder passwordEncoder;
 	
 	public Tutor toTutor(UserClientDTO dto) {
 		Tutor newTutor = new Tutor();
 		
 		newTutor.setUsername(dto.username());
-		newTutor.setPassword(passwordEncoder.encode(dto.password()));
+		//newTutor.setPassword(passwordEncoder.encode(dto.password()));
 		newTutor.setFirstName(dto.firstname());
 		newTutor.setLastName(dto.lastname());
 		newTutor.setRole(roleRepository.getReferenceById(dto.roleId()));
@@ -48,7 +48,7 @@ public class UserService{
 		Student newStudent = new Student();
 		
 		newStudent.setUsername(dto.username());
-		newStudent.setPassword(passwordEncoder.encode(dto.password()));
+		//newStudent.setPassword(passwordEncoder.encode(dto.password()));
 		newStudent.setFirstName(dto.firstname());
 		newStudent.setLastName(dto.lastname());
 		newStudent.setRole(roleRepository.getReferenceById(dto.roleId()));

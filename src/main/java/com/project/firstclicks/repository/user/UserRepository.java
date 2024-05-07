@@ -9,6 +9,9 @@ import com.project.firstclicks.entity.AppUser;
 
 @Repository
 public interface UserRepository extends JpaRepository<AppUser, Integer> {
-
 		Optional<AppUser> findByUsername(String username);
+		
+		boolean existsByUsername(String username);
+		
+		
 }
