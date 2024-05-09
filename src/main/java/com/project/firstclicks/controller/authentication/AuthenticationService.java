@@ -46,6 +46,7 @@ public class AuthenticationService {
 	private final EmailService emailService;
 	private final AuthenticationManager authenticationManager;
 	public final JwtService jwtService;
+	public final AppUserRepository userRepository;
 	
 	@Value("${application.mailing.frontend.activation-url}")
 	private String activationURL;
@@ -125,11 +126,14 @@ public class AuthenticationService {
 							request.getPassword()
 							)
 				);
-		var claims = new HashMap<String,Object>();
-		var user = ((Client)auth.getPrincipal());
-		claims.put("fullname", user.getFullName());
-		var jwtToken = jwtService.generateToken(claims,user);
 		
+		var claims = new HashMap<String,Object>();
+		var user = ((AppUser)auth.getPrincipal());
+		claims.put("username", user.getUsername());
+		var jwtToken = jwtService.generateToken(claims,user);
+		//si se autentica bien le cambiamos el last session.
+		user.setLastSession(LocalDateTime.now());
+		userRepository.saveAndFlush(user); 
 		return AuthenticationResponse.builder().token(jwtToken).build();
 	}
 	
