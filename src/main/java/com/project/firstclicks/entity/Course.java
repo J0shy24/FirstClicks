@@ -41,6 +41,7 @@ public class Course implements Serializable{
 	@Column(nullable=false)
 	private String name;
 	private Boolean isActive;
+	private String thumbnail;
 	@Column(nullable=false)
 	private String description;
 	@CreatedDate
