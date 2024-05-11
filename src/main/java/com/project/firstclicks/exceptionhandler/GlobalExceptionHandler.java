@@ -113,4 +113,36 @@ public class GlobalExceptionHandler {
 						);
 	}
 	
+	@ExceptionHandler(ResourceNotFoundException.class)
+	public ResponseEntity<ExceptionResponse> handleException(
+			ResourceNotFoundException exp
+			){
+		//Resource not found
+		exp.printStackTrace();
+		return ResponseEntity
+				.status(HttpStatus.NOT_FOUND)
+				.body(
+						ExceptionResponse.builder()
+							.errorDescription("No se ha encontrado el recurso")
+							.error(exp.getMessage())
+							.build()
+						);
+	}
+	
+	@ExceptionHandler(BadRequestException.class)
+	public ResponseEntity<ExceptionResponse> handleException(
+			BadRequestException exp
+			){
+		//Bad Request
+		exp.printStackTrace();
+		return ResponseEntity
+				.status(HttpStatus.BAD_REQUEST)
+				.body(
+						ExceptionResponse.builder()
+							.errorDescription("No se permite")
+							.error(exp.getMessage())
+							.build()
+						);
+	}
+	
 }
