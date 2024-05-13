@@ -27,12 +27,9 @@ public class StudentCourse implements Serializable{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Id
 	private Integer id;
+	
 	@ManyToOne
-	@JoinColumns({
-		@JoinColumn(name="course_id",referencedColumnName="id"),
-		@JoinColumn(name="tutor_id",referencedColumnName="tutor_id")
-				})
-	@Id
+	@JoinColumn(name="course_id")
 	private Course course;
 	
 	@ManyToOne

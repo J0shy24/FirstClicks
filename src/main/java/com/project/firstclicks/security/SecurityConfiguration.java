@@ -51,9 +51,16 @@ public class SecurityConfiguration {
 	                     "/configuration/security",
 	                     "/swagger-ui/**",
 	                     "/webjars/**",
-	                     "/swagger-ui.html"
+	                     "/swagger-ui.html",
+	                     "courses/**"
 	                     )
 						.permitAll()
+					.requestMatchers(
+							"tutor/**")
+						.hasAuthority("TUTOR")
+					.requestMatchers(
+							"student/**")
+						.hasAuthority("STUDENT")
 						.anyRequest()
 						.authenticated()
 				)

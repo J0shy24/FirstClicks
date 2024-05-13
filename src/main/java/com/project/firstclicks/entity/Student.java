@@ -1,7 +1,9 @@
 package com.project.firstclicks.entity;
 
-import jakarta.persistence.Entity;
+import java.util.Set;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,4 +14,7 @@ import lombok.EqualsAndHashCode;
 @Table(name="students")
 public class Student extends Client{
 	private static final long serialVersionUID = 1798476854278608136L;
+	
+	@OneToMany(mappedBy = "student")
+	Set<StudentCourse> enrollments;
 }

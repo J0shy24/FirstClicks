@@ -3,19 +3,26 @@ package com.project.firstclicks.repository;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.project.firstclicks.dto.CoursePublicDTO;
 import com.project.firstclicks.entity.Course;
-import com.project.firstclicks.entityID.CourseID;
+import com.project.firstclicks.entity.Tutor;
 
 
-public interface CourseRepository extends JpaRepository<Course, CourseID>{
+public interface CourseRepository extends JpaRepository<Course, Integer>{
 	List<Course> findTop6ByOrderByCreatedDate();
 	
-	Optional<Course> findByName(String name);
+	List<Course> findByNameContaining(String name);
 	
-	Optional<Course> findByIdAndTutorId(Integer id, Integer tutorId);
+	Optional<Course> findByIdAndTutorId(Integer id, Tutor tutorId);
 	
-	List<Course> findByTutorId(Integer id);
+	List<Course> findByTutorId(Tutor tutorId);
+	
+	Page<Course> findAllByTutorId(Pageable pabeable, Tutor tutorId);
+	
+	//List<CoursePublicDTO> findTop6ByOrderByCreatedDate();
 		
 }
