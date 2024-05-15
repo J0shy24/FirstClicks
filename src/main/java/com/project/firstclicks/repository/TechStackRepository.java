@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import com.project.firstclicks.entity.TechStack;
 import com.project.firstclicks.entityID.TechStackID;
-
 @Repository
 public interface TechStackRepository extends JpaRepository<TechStack, TechStackID>{
 }
