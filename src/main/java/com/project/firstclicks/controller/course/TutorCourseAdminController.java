@@ -25,6 +25,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.firstclicks.dto.CourseDTO;
+import com.project.firstclicks.dto.CoursePublicDTO;
 import com.project.firstclicks.entity.Course;
 import com.project.firstclicks.entity.Tutor;
 import com.project.firstclicks.service.TutorCourseAdminService;
@@ -39,28 +40,28 @@ public class TutorCourseAdminController {
 	private TutorCourseAdminService tutorCourseAdminService;
 	
 	@GetMapping("/list")
-	public List<Course> list() {
+	public List<CoursePublicDTO> list() {
 		return tutorCourseAdminService.findAll(getIdAccess());
 	}
 	
 	@GetMapping
-	public Page<Course> paginate(@PageableDefault(size = 5, sort = "title") Pageable pageable) {
-		return tutorCourseAdminService.paginate(pageable);
+	public Page<CoursePublicDTO> paginate(@PageableDefault(size = 5, sort = "name") Pageable pageable) {
+		return tutorCourseAdminService.paginate(pageable,getIdAccess());
 	}
 	
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping
 	public Course create(@RequestBody @Validated CourseDTO courseFormDTO) {
-		return tutorCourseAdminService.create(courseFormDTO);
+		return tutorCourseAdminService.create(courseFormDTO,getIdAccess());
 	}
 	
 	@GetMapping("/{id}")
-	public Course get(@PathVariable Integer id,HttpServletRequest request) {
-		return tutorCourseAdminService.findById(id,getIdAccess());
+	public CoursePublicDTO get(@PathVariable Integer id,HttpServletRequest request) {
+		return tutorCourseAdminService.findByIdDTO(id,getIdAccess());
 	}
 	
 	@PutMapping("/{id}")
-	public Course update(@PathVariable Integer id, @RequestBody @Validated CourseDTO courseFormDTO) {
+	public CoursePublicDTO update(@PathVariable Integer id, @RequestBody @Validated CourseDTO courseFormDTO) {
 		return tutorCourseAdminService.update(id, courseFormDTO,getIdAccess());
 	}
 	
@@ -72,9 +73,8 @@ public class TutorCourseAdminController {
 	private Integer getIdAccess() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		Tutor currentTutor = (Tutor) authentication.getPrincipal();
-		Integer tutorid = currentTutor.getId();
 		
-		return tutorid;
+		return currentTutor.getId();
 	}
 
 
