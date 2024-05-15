@@ -24,11 +24,7 @@ public class TechStack {
 	@Id
 	@JsonIgnore
     @ManyToOne
-    @JoinColumns({
-        @JoinColumn(name = "course_id", referencedColumnName = "id"),
-        @JoinColumn(name = "tutor_id", referencedColumnName = "tutor_id")
-    })
-
+    @JoinColumn(name = "course_id", referencedColumnName = "id")
     private Course course;
  	
 	@Id

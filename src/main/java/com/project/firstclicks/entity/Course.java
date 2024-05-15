@@ -3,15 +3,16 @@ package com.project.firstclicks.entity;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.annotations.Formula;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.project.firstclicks.entityID.CourseID;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
@@ -32,7 +33,6 @@ import lombok.Data;
 @Entity
 @Table(name="courses")
 @EntityListeners(AuditingEntityListener.class)
-@IdClass(CourseID.class)
 public class Course implements Serializable{
 
 	/**
@@ -43,10 +43,11 @@ public class Course implements Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
-	@Id
+	
 	@ManyToOne
 	@JoinColumn(name="tutor_id")
-	private Tutor tutor;
+    private Tutor tutorId;
+	
 	@Column(nullable=false)
 	private String name;
 	private Boolean isActive;
@@ -64,6 +65,8 @@ public class Course implements Serializable{
 	@OneToMany (mappedBy = "course", cascade = CascadeType.ALL)
 	private List<TechStack> techStack;
 	
+	@OneToMany(mappedBy = "course")
+	Set<StudentCourse> enrollments;
 	
     @Enumerated(EnumType.STRING)
     private Level level;
