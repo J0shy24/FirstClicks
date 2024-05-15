@@ -9,11 +9,11 @@ import lombok.Data;
 @Data
 @Builder
 public class AuthenticationRequestDTO {
-	@NotEmpty(message = "El usuario es obligatorio")
-	@NotBlank(message = "El usuario es obligatorio")
+	@NotEmpty(message = "Usuario Obligatorio")
+	@NotBlank(message = "Usuario Obligatorio")
 	private String userName;
-	@NotEmpty(message = "La contraseña es obligatoria")
-	@NotBlank(message = "La contraseña es obligatoria")
+	@NotEmpty(message = "Contraseña Obligatoria")
+	@NotBlank(message = "Contraseña Obligatoria")
 	@Size(min = 8,message = "La contraseña debe ser al menos 8 caracteres")
 	private String password;
 }

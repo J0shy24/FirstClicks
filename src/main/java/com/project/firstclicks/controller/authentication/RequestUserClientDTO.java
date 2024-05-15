@@ -13,28 +13,28 @@ import lombok.Data;
 @Data
 public class RequestUserClientDTO {
 	
-	@NotEmpty(message = "Username is mandatory")
-	@NotBlank(message = "Username is mandatory")
+	@NotEmpty(message = "Usuario Obligatorio")
+	@NotBlank(message = "Usuario Obligatorio")
 	private String userName;
-	@NotEmpty(message = "Password is mandatory")
-	@NotBlank(message = "Password is mandatory")
-	@Size(min = 8,message = "password should atleast be 8 characters long.")
+	@NotEmpty(message = "Contraseña Obligatoria")
+	@NotBlank(message = "Contraseña Obligatoria")
+	@Size(min = 8,message = "La contraseña debe ser al menos 8 caracteres")
 	private String password;
-	@NotEmpty(message = "First name is mandatory")
-	@NotBlank(message = "First name is mandatory")
+	@NotEmpty(message = "Nombre Obligatorio")
+	@NotBlank(message = "Nombre Obligatorio")
 	private String firstName;
-	@NotEmpty(message = "Last name is mandatory")
-	@NotBlank(message = "Last name is mandatory")
+	@NotEmpty(message = "Apellido Obligatorio")
+	@NotBlank(message = "Apellido Obligatorio")
 	private String lastName;
 	private LocalDate dateOfBirth;
 	private Integer roleId;
 	private String gender;
-	@NotEmpty(message = "Email is mandatory")
-	@NotBlank(message = "Email is mandatory")
-	@Email(message = "Wrong email format")
+	@NotEmpty(message = "Email Obligatorio")
+	@NotBlank(message = "Email Obligatorio")
+	@Email(message = "Error de formato en Email")
 	private String email;
-	@NotEmpty(message = "Address is mandatory")
-	@NotBlank(message = "Address is mandatory")
+	@NotEmpty(message = "Dirección Obligatoria")
+	@NotBlank(message = "Dirección Obligatoria")
 	private String address;
 	private String description;
 	private String photoRoute;
