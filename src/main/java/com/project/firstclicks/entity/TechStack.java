@@ -1,6 +1,7 @@
 package com.project.firstclicks.entity;
 
 
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,14 +15,16 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinColumns;
+
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
@@ -30,6 +33,7 @@ import lombok.Data;
 @Entity
 @Table(name = "techstack")
 public class TechStack {
+
  	
 	@Id
 	@Column(nullable = false)
@@ -45,7 +49,5 @@ public class TechStack {
 	)
     @JsonBackReference
     private Set<Course> course = new HashSet<>();
-
-	
 
 }

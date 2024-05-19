@@ -1,7 +1,9 @@
 package com.project.firstclicks.dto;
 
 import java.time.LocalDateTime;
+
 import java.util.Set;
+
 import java.util.List;
 
 import com.project.firstclicks.entity.Course;
@@ -15,6 +17,7 @@ public class CoursePublicDTO {
 	private String name;
 	private String description;
 	private String coverPath;
+  
 	private Set<TechStack> techStack;
 	private Course.Level level;
 	private TutorProfilePublic tutor;
@@ -23,4 +26,6 @@ public class CoursePublicDTO {
 	
 	private List<String> studentReview;
 	private Integer studentStars;
+
+
 }

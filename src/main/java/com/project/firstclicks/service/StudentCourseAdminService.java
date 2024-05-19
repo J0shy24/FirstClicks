@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.project.firstclicks.dto.CoursePublicDTO;
 import com.project.firstclicks.dto.StudentCourseDTO;
 import com.project.firstclicks.dto.StudentReviewDTO;
+
 import com.project.firstclicks.entity.Course;
 import com.project.firstclicks.entity.Student;
 import com.project.firstclicks.entity.StudentCourse;
@@ -21,6 +22,7 @@ import com.project.firstclicks.repository.StudentCourseRepository;
 import com.project.firstclicks.repository.StudentRepository;
 import com.project.firstclicks.repository.TechStackRepository;
 
+
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -30,6 +32,7 @@ public class StudentCourseAdminService {
 	private StudentCourseRepository studentCourseRepository;
 	private StudentRepository studentRepository;
 	private TechStackRepository techStackRepository;
+
 	private ModelMapper modelMapper;
 	
 	
@@ -90,6 +93,7 @@ public class StudentCourseAdminService {
 		
 	//	studentCourseDTOReturn.setCourseDTOInterAccess(converDbToDTO);
 		converDbToDTO.setTechStack(techStackRepository.findByCourse(studentCourse));
+
 		studentCourseDTOReturn.setCourseEnrolled(converDbToDTO);
 		
 		return studentCourseDTOReturn;
@@ -102,7 +106,6 @@ public class StudentCourseAdminService {
 		
 		studentCourseRepository.delete(LeaveCourse);
 	}
-
 
 	public StudentCourseDTO reviewCourse(Integer studentCourseId, Integer idAccess, StudentReviewDTO studentReview) {
 		StudentCourse studentCourse = studentCourseRepository.findByIdAndStudentId(studentCourseId, idAccess)

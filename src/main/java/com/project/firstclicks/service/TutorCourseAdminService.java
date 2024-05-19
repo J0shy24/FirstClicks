@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -27,6 +28,7 @@ import com.project.firstclicks.repository.TutorRepository;
 
 import io.swagger.v3.oas.models.security.SecurityScheme.In;
 import jakarta.transaction.Transactional;
+
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -58,6 +60,7 @@ public class TutorCourseAdminService {
 			CoursePublicDTO sum = new CoursePublicDTO();
 			modelMapper.map(course, sum);
 			sum.setTechStack(techStackRepository.findByCourse(course));
+
 			convertPublicCourses.add(sum);
 		}
 		
@@ -129,33 +132,24 @@ public class TutorCourseAdminService {
 		modelMapper.map(courseFromDB, convertCourseFromDBToCoursePublicDTO);
 		
 
-		
 		return convertCourseFromDBToCoursePublicDTO;
 	}
 	
 	public CoursePublicDTO update(Integer id, CourseDTO courseFormDTO, Integer tutorId) {
 		Course courseFromDb = findById(id,tutorId);
 		
-
-		
 		modelMapper.map(courseFormDTO, courseFromDb);
 		courseFromDb.setUpdatedDate(LocalDateTime.now());
 	//	courseFromDb.setTechStack(courseFormDTO.getTechStack());
-		
-		
-		
 		deleteTechStack(courseFromDb);
 		courseFromDb = courseRepository.save(courseFromDb);
-		
 		updateTechStack(courseFromDb,courseFormDTO);
-		
 		courseRepository.save(courseFromDb);
-		
-		
+    
 		return findByIdDTO(id, tutorId);
 	}
 	
-    @Transactional
+  @Transactional
 	private void deleteTechStack(Course courseFromDb) {
 		
 		techStackRepository.deleteByCourseId(courseFromDb.getId());
@@ -178,7 +172,6 @@ public class TutorCourseAdminService {
 			newTech.setTechStack(tech);
 			techStackRepository.save(newTech);
 		}
-		
 	}
 	
 	public void delete (Integer id, Integer tutorId) {

@@ -1,6 +1,5 @@
 package com.project.firstclicks.controller.authentication;
 
-
 import com.project.firstclicks.dto.UserProfileDTO;
 
 import lombok.AllArgsConstructor;
