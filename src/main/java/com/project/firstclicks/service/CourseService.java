@@ -3,6 +3,9 @@ package com.project.firstclicks.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.Set;
+
+
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -12,9 +15,14 @@ import org.springframework.stereotype.Service;
 import com.project.firstclicks.dto.CoursePublicDTO;
 import com.project.firstclicks.dto.TutorProfilePublic;
 import com.project.firstclicks.entity.Course;
+
+import com.project.firstclicks.entity.TechStack;
 import com.project.firstclicks.entity.Tutor;
 import com.project.firstclicks.exceptionhandler.ResourceNotFoundException;
 import com.project.firstclicks.repository.CourseRepository;
+import com.project.firstclicks.repository.StudentCourseRepository;
+import com.project.firstclicks.repository.TechStackRepository;
+
 
 import lombok.AllArgsConstructor;
 
@@ -23,6 +31,10 @@ import lombok.AllArgsConstructor;
 public class CourseService {
 	private CourseRepository courseRepository;
 	private ModelMapper modelMapper;
+
+	private TechStackRepository techStackRepository;
+	private StudentCourseRepository studentCourseRepository;
+
 	
 	public List<CoursePublicDTO> findLast6Courses() {
 		List<Course> CoursesFromDb = courseRepository.findTop6ByOrderByCreatedDate();
@@ -32,10 +44,15 @@ public class CourseService {
 		
 		for (Course course : CoursesFromDb) {
 			CoursePublicDTO sum = new CoursePublicDTO();
-			
+
+			Set<TechStack> techStack = techStackRepository.findByCourse(course);
+			sum.setTechStack(techStack);
 			modelMapper.map(course.getTutorId(), publicTutor);
 			
 			sum.setTutor(publicTutor);
+			sum.setStudentStars(studentCourseRepository.avgStudentStars(course.getId()));
+			sum.setStudentReview(studentCourseRepository.studentReviewList(course.getId()));
+
 
 			modelMapper.map(course, sum);
 			coursePublicDTOs.add(sum);
@@ -59,6 +76,10 @@ public class CourseService {
 				modelMapper.map(course.getTutorId(), publicTutor);
 				
 				sum.setTutor(publicTutor);
+				sum.setTechStack(techStackRepository.findByCourse(course));
+				sum.setStudentStars(studentCourseRepository.avgStudentStars(course.getId()));
+				sum.setStudentReview(studentCourseRepository.studentReviewList(course.getId()));
+
 
 				modelMapper.map(course, sum);
 				coursesPublicDTOs.add(sum);
@@ -81,6 +102,10 @@ public class CourseService {
 			modelMapper.map(course.getTutorId(), publicTutor);
 			
 			sum.setTutor(publicTutor);
+			sum.setTechStack(techStackRepository.findByCourse(course));
+			sum.setStudentStars(studentCourseRepository.avgStudentStars(course.getId()));
+			sum.setStudentReview(studentCourseRepository.studentReviewList(course.getId()));
+
 
 			modelMapper.map(course, sum);
 			coursePublicDTOs.add(sum);
@@ -103,7 +128,12 @@ public class CourseService {
 		coursePublicDTO.setTutor(publicTutor);
 		
 		modelMapper.map(courseFromDb, coursePublicDTO);
+		coursePublicDTO.setTechStack(techStackRepository.findByCourse(courseFromDb));
 		
+		coursePublicDTO.setStudentStars(studentCourseRepository.avgStudentStars(courseId));
+		coursePublicDTO.setStudentReview(studentCourseRepository.studentReviewList(courseId));
+		
+
 		return coursePublicDTO;
 	}
 }
