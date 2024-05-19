@@ -16,6 +16,7 @@ import com.project.firstclicks.dto.CoursePublicDTO;
 import com.project.firstclicks.entity.Course;
 import com.project.firstclicks.service.CourseService;
 
+
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -39,10 +40,10 @@ public class CourseController {
 		return courseService.paginate(pageable);
 	}
 	
-
 	
-	@GetMapping("/{id}")
+	@GetMapping("/{courseId}")
 	public CoursePublicDTO getCourse(@PathVariable Integer courseId) {
 		return courseService.findById(courseId);
 	}
-}
+	
+

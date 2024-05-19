@@ -2,10 +2,21 @@ package com.project.firstclicks.entity;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
+import java.util.HashSet;
+
 import java.util.List;
 import java.util.Set;
 
 import org.hibernate.annotations.Formula;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -17,11 +28,17 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+
+import jakarta.persistence.FetchType;
+
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinColumns;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -62,8 +79,11 @@ public class Course implements Serializable{
 	
 	private String coverPath;
 	
-	@OneToMany (mappedBy = "course", cascade = CascadeType.ALL)
-	private List<TechStack> techStack;
+  @ManyToMany(mappedBy = "course")
+	@JsonManagedReference
+  @OnDelete(action = OnDeleteAction.CASCADE)
+	private Set<TechStack> techStacks = new HashSet<>();
+
 	
 	@OneToMany(mappedBy = "course")
 	Set<StudentCourse> enrollments;

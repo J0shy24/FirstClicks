@@ -19,6 +19,7 @@ import com.project.firstclicks.security.JwtService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 
+import com.project.firstclicks.dto.UserProfileDTO;
 import com.project.firstclicks.email.EmailService;
 import com.project.firstclicks.email.EmailTemplateName;
 import com.project.firstclicks.entity.AppUser;
@@ -133,8 +134,12 @@ public class AuthenticationService {
 		var jwtToken = jwtService.generateToken(claims,user);
 		//si se autentica bien le cambiamos el last session.
 		user.setLastSession(LocalDateTime.now());
-		userRepository.saveAndFlush(user); 
-		return AuthenticationResponse.builder().token(jwtToken).build();
+		userRepository.saveAndFlush(user);
+		
+		UserProfileDTO returnUser = new UserProfileDTO();
+		returnUser.setUserName(user.getUsername());
+		returnUser.setRole(user.getRoles().get(0).getRoleName());
+
 	}
 	
 	//Activate tras enviar el email.

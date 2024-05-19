@@ -10,12 +10,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+
+import org.springframework.web.bind.annotation.RequestBody;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.project.firstclicks.dto.StudentCourseDTO;
+
+import com.project.firstclicks.dto.StudentReviewDTO;
+
 import com.project.firstclicks.entity.Course;
 import com.project.firstclicks.entity.Student;
 import com.project.firstclicks.entity.StudentCourse;
@@ -46,7 +52,11 @@ public class StudentCourseAdmin {
 	public void leave (@PathVariable Integer courseId) {
 		studentCourseAdminService.leave(courseId,getIdAccess());
 	}
-	
+
+	@PutMapping("/{studentCourseId}")
+	public StudentCourseDTO review(@PathVariable Integer studentCourseId, @RequestBody StudentReviewDTO studentReview) {
+		return studentCourseAdminService.reviewCourse(studentCourseId,getIdAccess(),studentReview);
+	}
 	
 	private Integer getIdAccess() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
