@@ -139,7 +139,8 @@ public class AuthenticationService {
 		UserProfileDTO returnUser = new UserProfileDTO();
 		returnUser.setUserName(user.getUsername());
 		returnUser.setRole(user.getRoles().get(0).getRoleName());
-
+		
+		return AuthenticationResponse.builder().token(jwtToken).user(returnUser).build();
 	}
 	
 	//Activate tras enviar el email.

@@ -93,7 +93,7 @@ public class FileSystemStorageService implements StorageService {
         try {
             FileSystemUtils.deleteRecursively(file);
         } catch (IOException ex) {
-            throw new RuntimeException("Cann't delete the file.");
+            throw new RuntimeException("Cannot delete the file.");
         }
     }
 }
