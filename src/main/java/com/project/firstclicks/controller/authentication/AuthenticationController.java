@@ -48,8 +48,6 @@ public class AuthenticationController {
 //    .ok()
 //    .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
 //    .body(authResponse);
-	
-	}
 
 	@GetMapping("/activate-account")
 	public void confirm(@RequestParam String token) throws MessagingException {

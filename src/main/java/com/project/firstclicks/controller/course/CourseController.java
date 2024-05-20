@@ -45,5 +45,6 @@ public class CourseController {
 	public CoursePublicDTO getCourse(@PathVariable Integer courseId) {
 		return courseService.findById(courseId);
 	}
+}
 	
 
