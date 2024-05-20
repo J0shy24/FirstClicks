@@ -3,7 +3,6 @@ package com.project.firstclicks.entity;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import com.project.firstclicks.entityID.StudentCourseId;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,7 +19,6 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name="student_course")
-@IdClass(StudentCourseId.class)
 public class StudentCourse implements Serializable{
 	
 	/**
