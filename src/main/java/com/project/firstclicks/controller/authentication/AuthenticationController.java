@@ -5,6 +5,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,8 +37,16 @@ public class AuthenticationController {
 	public ResponseEntity<AuthenticationResponse> authenticate(
 			 @RequestBody @Valid AuthenticationRequestDTO request
 			){
-		return ResponseEntity.ok(service.authenticate(request));
+		AuthenticationResponse access = service.authenticate(request);
+		return ResponseEntity.ok()
+				.header(HttpHeaders.AUTHORIZATION, "Bearer " + access.getToken())
+				.body(access);
 	}
+	
+//	ResponseEntity
+//    .ok()
+//    .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
+//    .body(authResponse);
 	
 	@GetMapping("/activate-account")
 	public void confirm(@RequestParam String token) throws MessagingException {

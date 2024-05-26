@@ -44,6 +44,7 @@ public class TutorCourseAdminController {
 		return tutorCourseAdminService.findAll(getIdAccess());
 	}
 	
+	
 	@GetMapping
 	public Page<CoursePublicDTO> paginate(@PageableDefault(size = 5, sort = "name") Pageable pageable) {
 		return tutorCourseAdminService.paginate(pageable,getIdAccess());
@@ -51,7 +52,7 @@ public class TutorCourseAdminController {
 	
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping
-	public Course create(@RequestBody @Validated CourseDTO courseFormDTO) {
+	public CoursePublicDTO create(@RequestBody @Validated CourseDTO courseFormDTO) {
 		return tutorCourseAdminService.create(courseFormDTO,getIdAccess());
 	}
 	

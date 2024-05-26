@@ -19,6 +19,7 @@ import com.project.firstclicks.security.JwtService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 
+import com.project.firstclicks.dto.UserProfileDTO;
 import com.project.firstclicks.email.EmailService;
 import com.project.firstclicks.email.EmailTemplateName;
 import com.project.firstclicks.entity.AppUser;
@@ -79,7 +80,7 @@ public class AuthenticationService {
 				newTutor.setEnabled(false);
 				
 				if(request.getPhotoRoute().isEmpty()||request.getPhotoRoute().isBlank()||request.getPhotoRoute()==null) {
-					newTutor.setPhotoRoute("https://picsum.photos/200");
+					newTutor.setPhotoRoute("Default.png");
 				}else {
 					newTutor.setPhotoRoute(request.getPhotoRoute());
 				}
@@ -133,8 +134,13 @@ public class AuthenticationService {
 		var jwtToken = jwtService.generateToken(claims,user);
 		//si se autentica bien le cambiamos el last session.
 		user.setLastSession(LocalDateTime.now());
-		userRepository.saveAndFlush(user); 
-		return AuthenticationResponse.builder().token(jwtToken).build();
+		userRepository.saveAndFlush(user);
+		
+		UserProfileDTO returnUser = new UserProfileDTO();
+		returnUser.setUserName(user.getUsername());
+		returnUser.setRole(user.getRoles().get(0).getRoleName());
+		
+		return AuthenticationResponse.builder().token(jwtToken).user(returnUser).build();
 	}
 	
 	//Activate tras enviar el email.

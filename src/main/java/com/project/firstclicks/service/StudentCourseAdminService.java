@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.project.firstclicks.dto.CoursePublicDTO;
 import com.project.firstclicks.dto.StudentCourseDTO;
+import com.project.firstclicks.dto.StudentReviewDTO;
 import com.project.firstclicks.entity.Course;
 import com.project.firstclicks.entity.Student;
 import com.project.firstclicks.entity.StudentCourse;
@@ -18,6 +19,7 @@ import com.project.firstclicks.exceptionhandler.ResourceNotFoundException;
 import com.project.firstclicks.repository.CourseRepository;
 import com.project.firstclicks.repository.StudentCourseRepository;
 import com.project.firstclicks.repository.StudentRepository;
+import com.project.firstclicks.repository.TechStackRepository;
 
 import lombok.AllArgsConstructor;
 
@@ -27,6 +29,7 @@ public class StudentCourseAdminService {
 	private CourseRepository courseRepository;
 	private StudentCourseRepository studentCourseRepository;
 	private StudentRepository studentRepository;
+	private TechStackRepository techStackRepository;
 	private ModelMapper modelMapper;
 	
 	
@@ -86,6 +89,7 @@ public class StudentCourseAdminService {
 		modelMapper.map(saveStudentCourse, studentCourseDTOReturn);
 		
 	//	studentCourseDTOReturn.setCourseDTOInterAccess(converDbToDTO);
+		converDbToDTO.setTechStack(techStackRepository.findByCourse(studentCourse));
 		studentCourseDTOReturn.setCourseEnrolled(converDbToDTO);
 		
 		return studentCourseDTOReturn;
@@ -97,5 +101,21 @@ public class StudentCourseAdminService {
 									.orElseThrow(ResourceNotFoundException::new);
 		
 		studentCourseRepository.delete(LeaveCourse);
+	}
+
+
+	public StudentCourseDTO reviewCourse(Integer studentCourseId, Integer idAccess, StudentReviewDTO studentReview) {
+		StudentCourse studentCourse = studentCourseRepository.findByIdAndStudentId(studentCourseId, idAccess)
+				.orElseThrow(ResourceNotFoundException::new);
+		
+		studentCourse.setStudentReview(studentReview.getStudentReview());
+		studentCourse.setStudentStars(studentReview.getStudentStars());
+		
+
+		
+		StudentCourseDTO studetnDTOCourseReturn = convertStudentCourseToCourseDTO(studentCourseRepository.save(studentCourse));
+		
+		
+		return studetnDTOCourseReturn;
 	}
 }
