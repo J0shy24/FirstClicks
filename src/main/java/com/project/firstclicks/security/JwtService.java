@@ -21,6 +21,8 @@ public class JwtService {
 	private String secretKey;
 	@Value(value="${application.security.jwt.expiration}")
 	private long jwtExpiration;
+	@Value(value="${application.security.jwt.auth.expiration}")
+	private long jwtAuthExpiration;
 	
 	public String generateToken(UserDetails userDetails) {
 		return generateToken(new HashMap<>(),userDetails);
@@ -29,6 +31,11 @@ public class JwtService {
 	public String generateToken(HashMap<String,Object> claims,UserDetails userDetails) {
 		
 		return buildToken(claims,userDetails,jwtExpiration);
+	}
+	
+	public String generateAuthToken(HashMap<String,Object> claims,UserDetails userDetails) {
+		
+		return buildToken(claims,userDetails,System.currentTimeMillis()+jwtAuthExpiration);
 	}
 	
 	private String buildToken(Map<String,Object> claims,UserDetails userDetails,long jwtExpiration) {
