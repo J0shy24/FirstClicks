@@ -2,21 +2,29 @@ package com.project.firstclicks.controller.authentication;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.project.firstclicks.security.JwtService;
 
 import jakarta.mail.MessagingException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 import com.project.firstclicks.dto.UserProfileDTO;
@@ -80,7 +88,13 @@ public class AuthenticationService {
 				newTutor.setEnabled(false);
 				
 				if(request.getPhotoRoute().isEmpty()||request.getPhotoRoute().isBlank()||request.getPhotoRoute()==null) {
-					newTutor.setPhotoRoute("Default.png");
+	
+					if(newTutor.getGender()=="Hombre"||newTutor.getGender()=="HOMBRE"||newTutor.getGender()=="hombre") {
+						newTutor.setPhotoRoute("/mediafiles/male_tutor_icon.png");
+					}else {
+						newTutor.setPhotoRoute("/mediafiles/female_tutor_icon.png");
+					}
+
 				}else {
 					newTutor.setPhotoRoute(request.getPhotoRoute());
 				}
@@ -109,7 +123,11 @@ public class AuthenticationService {
 				newStudent.setEnabled(false);
 				
 				if(request.getPhotoRoute().isEmpty()||request.getPhotoRoute().isBlank()||request.getPhotoRoute()==null) {
-					newStudent.setPhotoRoute("https://picsum.photos/200");
+					if(newStudent.getGender()=="Hombre"||newStudent.getGender()=="HOMBRE"||newStudent.getGender()=="hombre") {
+						newStudent.setPhotoRoute("/mediafiles/male_student_icon.png");
+					}else {
+						newStudent.setPhotoRoute("/mediafiles/female_student_icon.png");
+					}
 				}else {
 					newStudent.setPhotoRoute(request.getPhotoRoute());
 				}
@@ -135,6 +153,9 @@ public class AuthenticationService {
 		//si se autentica bien le cambiamos el last session.
 		user.setLastSession(LocalDateTime.now());
 		userRepository.saveAndFlush(user);
+
+		Client client = (Client) user;
+		SaveAuthToken(jwtToken,client);
 		
 		UserProfileDTO returnUser = new UserProfileDTO();
 		returnUser.setUserName(user.getUsername());
@@ -142,7 +163,7 @@ public class AuthenticationService {
 		
 		return AuthenticationResponse.builder().token(jwtToken).user(returnUser).build();
 	}
-	
+		
 	//Activate tras enviar el email.
 	@Transactional
 	public void activateAccount(String token) throws MessagingException {
@@ -198,6 +219,20 @@ public class AuthenticationService {
 			tokenBuilder.append(characters.charAt(randomIndex));
 		}
 		return tokenBuilder.toString();
+	}
+	
+
+	private void SaveAuthToken(String jwttoken,Client client) {
+		//generar un token
+		Token token = new Token();
+				
+		token.setToken(jwttoken);
+		token.setCreatedAt(LocalDateTime.now());
+		//caduca en 15 mins
+		token.setExpiresAt(LocalDateTime.now().plusDays(1));
+		token.setUser(client);
+		
+		tokenRepository.saveAndFlush(token);
 	}
 
 }

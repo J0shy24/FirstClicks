@@ -3,13 +3,16 @@ package com.project.firstclicks.entity;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.hibernate.annotations.Formula;
+
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -71,11 +74,11 @@ public class Course implements Serializable{
 	
 	private String coverPath;
 	
-
-    @ManyToMany(mappedBy = "course")
+  @ManyToMany(mappedBy = "course")
 	@JsonManagedReference
-    @OnDelete(action = OnDeleteAction.CASCADE)
+  @OnDelete(action = OnDeleteAction.CASCADE)
 	private Set<TechStack> techStacks = new HashSet<>();
+
 	
 	@OneToMany(mappedBy = "course")
 	Set<StudentCourse> enrollments;

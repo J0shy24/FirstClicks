@@ -11,8 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,6 +30,8 @@ public class SecurityConfiguration {
 	private final JwtFilter jwtAuthFilter;
 	@Autowired
 	private final AppUserDetailsService appUserDetailsService;
+	@Autowired
+	private final CustomLogoutHandler logoutHandler;
 	
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
@@ -52,22 +53,27 @@ public class SecurityConfiguration {
 	                     "/swagger-ui/**",
 	                     "/webjars/**",
 	                     "/swagger-ui.html",
-	                     "courses/**",
-	                     "media/public/*"
+	                     "/courses/**"
 	                     )
 						.permitAll()
 					.requestMatchers(
-							"tutor/**")
+							"/tutor/**")
 						.hasAuthority("TUTOR")
 					.requestMatchers(
-							"student/**")
+							"/student/**")
 						.hasAuthority("STUDENT")
 						.anyRequest()
 						.authenticated()
 				)
 				.sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authenticationProvider(authenticationProvider())
-				.addFilterBefore(jwtAuthFilter,UsernamePasswordAuthenticationFilter.class);
+				.addFilterBefore(jwtAuthFilter,UsernamePasswordAuthenticationFilter.class)
+				.logout(l->
+						l.addLogoutHandler(logoutHandler)
+						.logoutSuccessHandler(
+								(request,response,authentication)->SecurityContextHolder.clearContext()
+								));
+					
 		
 		return httpSecurity.build();
 		

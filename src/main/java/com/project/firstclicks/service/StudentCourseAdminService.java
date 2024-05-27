@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.project.firstclicks.dto.CoursePublicDTO;
 import com.project.firstclicks.dto.StudentCourseDTO;
 import com.project.firstclicks.dto.StudentReviewDTO;
+
 import com.project.firstclicks.entity.Course;
 import com.project.firstclicks.entity.Student;
 import com.project.firstclicks.entity.StudentCourse;
@@ -102,8 +103,7 @@ public class StudentCourseAdminService {
 		
 		studentCourseRepository.delete(LeaveCourse);
 	}
-
-
+  
 	public StudentCourseDTO reviewCourse(Integer studentCourseId, Integer idAccess, StudentReviewDTO studentReview) {
 		StudentCourse studentCourse = studentCourseRepository.findByIdAndStudentId(studentCourseId, idAccess)
 				.orElseThrow(ResourceNotFoundException::new);

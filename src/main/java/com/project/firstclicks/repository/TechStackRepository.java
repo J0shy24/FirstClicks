@@ -17,8 +17,8 @@ import jakarta.transaction.Transactional;
 public interface TechStackRepository extends JpaRepository<TechStack, String>{
 	Set<TechStack> findByCourse(Course course);
 	
-    @Modifying
-    @Transactional
+  @Modifying
+  @Transactional
 	@Query(value = "delete from course_techstack where course_id = :courseId", nativeQuery = true)
 	Integer deleteByCourseId(@Param("courseId") Integer courseId);
 }

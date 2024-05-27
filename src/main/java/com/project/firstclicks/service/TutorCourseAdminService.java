@@ -94,8 +94,6 @@ public class TutorCourseAdminService {
 		Set<TechStack> tech_sum = saveTechStack(courseDTO,SaveCourse);
 	//	SaveCourse.setTechStacks(tech_sum);
 		
-		
-		
 		return findByIdDTO(SaveCourse.getId(), tutorid);
 	}
 
@@ -129,35 +127,26 @@ public class TutorCourseAdminService {
 		convertCourseFromDBToCoursePublicDTO.setTechStack(techs);
 		
 		modelMapper.map(courseFromDB, convertCourseFromDBToCoursePublicDTO);
-		
 
-		
 		return convertCourseFromDBToCoursePublicDTO;
 	}
 	
 	public CoursePublicDTO update(Integer id, CourseDTO courseFormDTO, Integer tutorId) {
 		Course courseFromDb = findById(id,tutorId);
-		
-
-		
 		modelMapper.map(courseFormDTO, courseFromDb);
 		courseFromDb.setUpdatedDate(Timestamp.valueOf(LocalDateTime.now()));
 	//	courseFromDb.setTechStack(courseFormDTO.getTechStack());
-		
-		
-		
 		deleteTechStack(courseFromDb);
 		courseFromDb = courseRepository.save(courseFromDb);
 		
 		updateTechStack(courseFromDb,courseFormDTO);
-		
 		courseRepository.save(courseFromDb);
-		
-		
+    
 		return findByIdDTO(id, tutorId);
 	}
 	
-    @Transactional
+
+  @Transactional
 	private void deleteTechStack(Course courseFromDb) {
 		
 		techStackRepository.deleteByCourseId(courseFromDb.getId());
@@ -180,7 +169,6 @@ public class TutorCourseAdminService {
 			newTech.setTechStack(tech);
 			techStackRepository.save(newTech);
 		}
-		
 	}
 	
 	public void delete (Integer id, Integer tutorId) {
