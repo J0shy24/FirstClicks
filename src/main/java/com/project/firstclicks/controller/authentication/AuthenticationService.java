@@ -88,13 +88,13 @@ public class AuthenticationService {
 				newTutor.setEnabled(false);
 				
 				if(request.getPhotoRoute().isEmpty()||request.getPhotoRoute().isBlank()||request.getPhotoRoute()==null) {
-					
+	
 					if(newTutor.getGender()=="Hombre"||newTutor.getGender()=="HOMBRE"||newTutor.getGender()=="hombre") {
 						newTutor.setPhotoRoute("/mediafiles/male_tutor_icon.png");
 					}else {
 						newTutor.setPhotoRoute("/mediafiles/female_tutor_icon.png");
 					}
-					
+
 				}else {
 					newTutor.setPhotoRoute(request.getPhotoRoute());
 				}
@@ -153,6 +153,7 @@ public class AuthenticationService {
 		//si se autentica bien le cambiamos el last session.
 		user.setLastSession(LocalDateTime.now());
 		userRepository.saveAndFlush(user);
+
 		Client client = (Client) user;
 		SaveAuthToken(jwtToken,client);
 		

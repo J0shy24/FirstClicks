@@ -5,10 +5,15 @@ import java.time.LocalDate;
 import lombok.Data;
 
 @Data
-public class TutorProfilePublic {
-	Integer id;
+public class TutorPrivateProfileDTO {
+	String username;
 	String firstName;
 	String lastName;
 	String photoRoute;
+	LocalDate dateOfBirth;
+	String address;
 	String description;
+	String email;
+	String gender;
+	boolean isEnabled;
 }

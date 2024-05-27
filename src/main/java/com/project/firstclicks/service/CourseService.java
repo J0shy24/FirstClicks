@@ -2,6 +2,7 @@ package com.project.firstclicks.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import java.util.Set;
 
@@ -23,6 +24,8 @@ import com.project.firstclicks.repository.CourseRepository;
 import com.project.firstclicks.repository.StudentCourseRepository;
 import com.project.firstclicks.repository.TechStackRepository;
 
+import com.project.firstclicks.repository.TutorRepository;
+
 
 import lombok.AllArgsConstructor;
 
@@ -31,10 +34,9 @@ import lombok.AllArgsConstructor;
 public class CourseService {
 	private CourseRepository courseRepository;
 	private ModelMapper modelMapper;
-
 	private TechStackRepository techStackRepository;
 	private StudentCourseRepository studentCourseRepository;
-
+	private TutorRepository tutorRepository;
 	
 	public List<CoursePublicDTO> findLast6Courses() {
 		List<Course> CoursesFromDb = courseRepository.findTop6ByOrderByCreatedDate();
@@ -80,7 +82,6 @@ public class CourseService {
 				sum.setStudentStars(studentCourseRepository.avgStudentStars(course.getId()));
 				sum.setStudentReview(studentCourseRepository.studentReviewList(course.getId()));
 
-
 				modelMapper.map(course, sum);
 				coursesPublicDTOs.add(sum);
 			}
@@ -91,27 +92,24 @@ public class CourseService {
 	}
 	
 	public Page<CoursePublicDTO> paginate(Pageable pageable) {
-		List<Course> CoursesFromDb = courseRepository.findAll();
-		List<CoursePublicDTO> coursePublicDTOs = new ArrayList<>();
 		
-		TutorProfilePublic publicTutor = new TutorProfilePublic();
+		Page<Course> CoursesFromDb = courseRepository.findAll(pageable);
+		List<CoursePublicDTO> coursePublicDTOs = new ArrayList<>();
 		
 		for (Course course : CoursesFromDb) {
 			CoursePublicDTO sum = new CoursePublicDTO();
 			
-			modelMapper.map(course.getTutorId(), publicTutor);
-			
-			sum.setTutor(publicTutor);
+			//sum.setTutor(null);
 			sum.setTechStack(techStackRepository.findByCourse(course));
 			sum.setStudentStars(studentCourseRepository.avgStudentStars(course.getId()));
 			sum.setStudentReview(studentCourseRepository.studentReviewList(course.getId()));
 
-
 			modelMapper.map(course, sum);
+			sum.setTutor(null);
 			coursePublicDTOs.add(sum);
 		}
 		
-		Page<CoursePublicDTO> pageCoursePublicDTO = new PageImpl<>(coursePublicDTOs, pageable, 0);
+		Page<CoursePublicDTO> pageCoursePublicDTO = new PageImpl<>(coursePublicDTOs, CoursesFromDb.getPageable(), CoursesFromDb.getTotalElements());
 		
 		return  pageCoursePublicDTO;
 	}
@@ -133,7 +131,50 @@ public class CourseService {
 		coursePublicDTO.setStudentStars(studentCourseRepository.avgStudentStars(courseId));
 		coursePublicDTO.setStudentReview(studentCourseRepository.studentReviewList(courseId));
 		
+		coursePublicDTO.setTechStack(techStackRepository.findByCourse(courseFromDb));
+		
+		coursePublicDTO.setStudentStars(studentCourseRepository.avgStudentStars(courseId));
+		coursePublicDTO.setStudentReview(studentCourseRepository.studentReviewList(courseId));
 
 		return coursePublicDTO;
+	}
+
+	public List<CoursePublicDTO> findTutorCoursesByTutorId(Integer tutorId) {
+		List<Course> coursesFromDb = courseRepository.findByTutorId(GetTutorByTutorId(tutorId));
+		List<CoursePublicDTO> convertPublicCourses = new ArrayList<>();
+		
+		for (Course course : coursesFromDb) {
+			CoursePublicDTO sum = new CoursePublicDTO();
+			modelMapper.map(course, sum);
+			sum.setTechStack(techStackRepository.findByCourse(course));
+			sum.setTutor(null);
+			convertPublicCourses.add(sum);
+		}
+		
+		
+		return convertPublicCourses;
+	}
+	
+	private Tutor GetTutorByTutorId (Integer tutorId) {
+		return tutorRepository.findById(tutorId)
+				.orElseThrow(ResourceNotFoundException::new);
+	}
+
+	public List<TutorProfilePublic> findRandomTutors(Integer tutorId) {
+		List<Integer> tutorsRandomIds = tutorRepository.getRandomTutorIds(tutorId);
+		List<TutorProfilePublic> tutorReturn = new ArrayList<>();
+		
+		for (Integer integer : tutorsRandomIds) {
+			Tutor tutorById = tutorRepository.findById(integer)
+					.orElseThrow(ResourceNotFoundException::new);
+			TutorProfilePublic tutorConvert = new TutorProfilePublic();
+			
+			modelMapper.map(tutorById, tutorConvert);
+			
+			tutorReturn.add(tutorConvert);
+		}
+		
+		
+		return tutorReturn;
 	}
 }

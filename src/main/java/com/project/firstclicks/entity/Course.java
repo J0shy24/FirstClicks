@@ -1,10 +1,10 @@
 package com.project.firstclicks.entity;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import java.util.HashSet;
-
 import java.util.List;
 import java.util.Set;
 
@@ -12,14 +12,11 @@ import org.hibernate.annotations.Formula;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -28,9 +25,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-
 import jakarta.persistence.FetchType;
-
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -73,9 +68,9 @@ public class Course implements Serializable{
 	@CreatedDate
 	@Column(nullable=false,updatable=false)
 	@Temporal(TemporalType.TIMESTAMP)
-	private LocalDateTime createdDate;
+	private Timestamp createdDate;
 	@Temporal(TemporalType.TIMESTAMP)
-	private LocalDateTime UpdatedDate;
+	private Timestamp updatedDate;
 	
 	private String coverPath;
 	

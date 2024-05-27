@@ -3,7 +3,10 @@ package com.project.firstclicks.entity;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,8 +33,9 @@ public class StudentCourse implements Serializable{
 	@Id
 	private Integer id;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.REMOVE)
 	@JoinColumn(name="course_id")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Course course;
 	
 	@ManyToOne

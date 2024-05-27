@@ -1,11 +1,11 @@
 package com.project.firstclicks.service;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -28,7 +28,6 @@ import com.project.firstclicks.repository.TutorRepository;
 
 import io.swagger.v3.oas.models.security.SecurityScheme.In;
 import jakarta.transaction.Transactional;
-
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -60,7 +59,6 @@ public class TutorCourseAdminService {
 			CoursePublicDTO sum = new CoursePublicDTO();
 			modelMapper.map(course, sum);
 			sum.setTechStack(techStackRepository.findByCourse(course));
-
 			convertPublicCourses.add(sum);
 		}
 		
@@ -76,8 +74,9 @@ public class TutorCourseAdminService {
 		return pageCoursePublicDTO;
 	}
 	
-	public Course create(CourseDTO courseDTO, Integer tutorid) {
+	public CoursePublicDTO create(CourseDTO courseDTO, Integer tutorid) {
 		Course course = new Course();
+		CoursePublicDTO convertCourseFromDBToCoursePublicDTO = new CoursePublicDTO();
 		
 		modelMapper.map(courseDTO, course);
 		
@@ -86,18 +85,16 @@ public class TutorCourseAdminService {
 //		course.setCoverPath(courseDTO.getCoverPath());
 //		course.setLevel(courseDTO.getLevel());
 //		course.setTechStack(null);
-		course.setCreatedDate(LocalDateTime.now());
+		course.setCreatedDate(Timestamp.valueOf(LocalDateTime.now()));
+		course.setUpdatedDate(Timestamp.valueOf(LocalDateTime.now()));
 		course.setIsActive(true);
 		course.setTutorId(GetTutorByTutorId(tutorid));
 		Course SaveCourse = courseRepository.save(course);
 		
 		Set<TechStack> tech_sum = saveTechStack(courseDTO,SaveCourse);
-		
-
-		
 	//	SaveCourse.setTechStacks(tech_sum);
-		SaveCourse.setTechStacks(tech_sum);
-		return SaveCourse;
+		
+		return findByIdDTO(SaveCourse.getId(), tutorid);
 	}
 
 	private Set<TechStack> saveTechStack(CourseDTO courseDTO, Course Save) {
@@ -130,25 +127,25 @@ public class TutorCourseAdminService {
 		convertCourseFromDBToCoursePublicDTO.setTechStack(techs);
 		
 		modelMapper.map(courseFromDB, convertCourseFromDBToCoursePublicDTO);
-		
 
 		return convertCourseFromDBToCoursePublicDTO;
 	}
 	
 	public CoursePublicDTO update(Integer id, CourseDTO courseFormDTO, Integer tutorId) {
 		Course courseFromDb = findById(id,tutorId);
-		
 		modelMapper.map(courseFormDTO, courseFromDb);
-		courseFromDb.setUpdatedDate(LocalDateTime.now());
+		courseFromDb.setUpdatedDate(Timestamp.valueOf(LocalDateTime.now()));
 	//	courseFromDb.setTechStack(courseFormDTO.getTechStack());
 		deleteTechStack(courseFromDb);
 		courseFromDb = courseRepository.save(courseFromDb);
+		
 		updateTechStack(courseFromDb,courseFormDTO);
 		courseRepository.save(courseFromDb);
     
 		return findByIdDTO(id, tutorId);
 	}
 	
+
   @Transactional
 	private void deleteTechStack(Course courseFromDb) {
 		

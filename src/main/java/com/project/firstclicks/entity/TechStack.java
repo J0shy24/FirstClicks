@@ -1,7 +1,5 @@
 package com.project.firstclicks.entity;
 
-
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,14 +31,11 @@ import lombok.Data;
 @Entity
 @Table(name = "techstack")
 public class TechStack {
-
  	
 	@Id
 	@Column(nullable = false)
 	private String techStack;
 	
-	
-
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(
 			name = "course_techstack",

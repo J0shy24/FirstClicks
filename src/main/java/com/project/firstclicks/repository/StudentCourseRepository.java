@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import org.springframework.data.jpa.repository.Query;
 
@@ -19,7 +20,6 @@ public interface StudentCourseRepository extends JpaRepository<StudentCourse, In
 	
 	Optional<StudentCourse> findByCourseIdAndStudentId(Integer courseId, Integer studentId);
 	
-
 	Optional<StudentCourse> findByIdAndStudentId(Integer studentCourseId, Integer studentId);
 	
 	boolean existsByCourseIdAndStudentId(Integer courseId, Integer studentId);
@@ -29,5 +29,4 @@ public interface StudentCourseRepository extends JpaRepository<StudentCourse, In
 	
 	@Query(value = "select student_review FROM student_course s where s.course_id = :courseId", nativeQuery = true)
 	List<String> studentReviewList(Integer courseId);
-
 }
