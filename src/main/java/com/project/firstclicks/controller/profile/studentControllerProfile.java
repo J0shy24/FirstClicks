@@ -1,5 +1,7 @@
 package com.project.firstclicks.controller.profile;
 
+import java.util.List;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +26,10 @@ public class studentControllerProfile {
 		return profileService.GetStutendByStudentId(getIdAccess());
 	}
 	
+	@GetMapping("/idCourses")
+	public List<Integer> IdsEnrolledCourses() {
+		return profileService.IdsEnrolledCourses(getIdAccess());
+	}
 	
 	private Integer getIdAccess() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

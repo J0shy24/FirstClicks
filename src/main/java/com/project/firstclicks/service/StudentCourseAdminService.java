@@ -91,6 +91,7 @@ public class StudentCourseAdminService {
 		
 	//	studentCourseDTOReturn.setCourseDTOInterAccess(converDbToDTO);
 		converDbToDTO.setTechStack(techStackRepository.findByCourse(studentCourse));
+		converDbToDTO.setStudentStars(studentCourseRepository.avgStudentStars(studentCourse.getId()));
 		studentCourseDTOReturn.setCourseEnrolled(converDbToDTO);
 		
 		return studentCourseDTOReturn;
@@ -117,5 +118,14 @@ public class StudentCourseAdminService {
 		
 		
 		return studetnDTOCourseReturn;
+	}
+
+
+	public StudentCourseDTO getStudentCourseById(Integer idAccess,Integer studentCourseId) {
+		StudentCourse course = studentCourseRepository.findByIdAndStudentId(studentCourseId, idAccess).orElseThrow(ResourceNotFoundException::new);
+		StudentCourseDTO publicCourse = new StudentCourseDTO();
+		
+		
+		return convertStudentCourseToCourseDTO(course);
 	}
 }
