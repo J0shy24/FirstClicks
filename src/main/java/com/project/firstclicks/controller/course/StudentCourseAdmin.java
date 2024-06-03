@@ -54,6 +54,11 @@ public class StudentCourseAdmin {
 		return studentCourseAdminService.reviewCourse(studentCourseId,getIdAccess(),studentReview);
 	}
 	
+	@GetMapping("/{studentCourseId}")
+	public StudentCourseDTO getStudentCourseById(@PathVariable Integer studentCourseId) {
+		return studentCourseAdminService.getStudentCourseById(getIdAccess(),studentCourseId);
+	}
+	
 	private Integer getIdAccess() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		Student currentTutor = (Student) authentication.getPrincipal();
