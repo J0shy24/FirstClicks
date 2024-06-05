@@ -83,6 +83,7 @@ public class AuthenticationService {
 				newTutor.setAddress(request.getAddress());
 				newTutor.setDescription(request.getDescription());
 				newTutor.setRoles(List.of(userRole));
+				newTutor.setPhoneNumber(request.getPhoneNumber());
 				newTutor.setAccountLocked(false);
 				//User no esta habilitado porque tendrá que activar su cuenta
 				newTutor.setEnabled(false);
@@ -118,6 +119,7 @@ public class AuthenticationService {
 				newStudent.setAddress(request.getAddress());
 				newStudent.setDescription(request.getDescription());
 				newStudent.setRoles(List.of(userRole));
+				newStudent.setPhoneNumber(request.getPhoneNumber());
 				newStudent.setAccountLocked(false);
 				//User no esta habilitado porque tendrá que activar su cuenta
 				newStudent.setEnabled(false);

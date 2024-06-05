@@ -30,6 +30,7 @@ public class Client extends AppUser{
 	private String email;
 	@Column(nullable=false)
 	private String address;
+	private Integer phoneNumber;
 	private String description;
 	private String photoRoute;
 	

@@ -65,7 +65,7 @@ public class ProfileService {
 
 	public List<Integer> IdsEnrolledCourses(Integer idAccess) {
 		List<StudentCourse> allCoursesofStudent = studentCourseRepository.findAllByStudentId(idAccess);
-		List<Integer> sum = new ArrayList();
+		List<Integer> sum = new ArrayList<Integer>();
 		
 		for (StudentCourse course : allCoursesofStudent) {
 			sum.add(course.getCourse().getId());
