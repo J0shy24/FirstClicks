@@ -2,6 +2,7 @@ package com.project.firstclicks.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import java.util.Set;
@@ -10,6 +11,7 @@ import java.util.Set;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -97,14 +99,14 @@ public class CourseService {
 		List<CoursePublicDTO> coursePublicDTOs = new ArrayList<>();
 		
 		for (Course course : CoursesFromDb) {
-			CoursePublicDTO sum = new CoursePublicDTO();
+			CoursePublicDTO sum = findById(course.getId());
 			
 			//sum.setTutor(null);
-			sum.setTechStack(techStackRepository.findByCourse(course));
-			sum.setStudentStars(studentCourseRepository.avgStudentStars(course.getId()));
-			sum.setStudentReview(studentCourseRepository.studentReviewList(course.getId()));
-
-			modelMapper.map(course, sum);
+//			sum.setTechStack(techStackRepository.findByCourse(course));
+//			sum.setStudentStars(studentCourseRepository.avgStudentStars(course.getId()));
+//			sum.setStudentReview(studentCourseRepository.studentReviewList(course.getId()));
+//
+//			modelMapper.map(course, sum);
 			sum.setTutor(null);
 			coursePublicDTOs.add(sum);
 		}
@@ -144,9 +146,7 @@ public class CourseService {
 		List<CoursePublicDTO> convertPublicCourses = new ArrayList<>();
 		
 		for (Course course : coursesFromDb) {
-			CoursePublicDTO sum = new CoursePublicDTO();
-			modelMapper.map(course, sum);
-			sum.setTechStack(techStackRepository.findByCourse(course));
+			CoursePublicDTO sum = findById(course.getId());
 			sum.setTutor(null);
 			convertPublicCourses.add(sum);
 		}
@@ -176,5 +176,41 @@ public class CourseService {
 		
 		
 		return tutorReturn;
+	}
+
+	public Page<CoursePublicDTO> findByNamePage(Optional<String> name, Pageable pageable) {
+		Page<Course> coursesFromDB = courseRepository.findByNameContaining(name.get(), pageable);
+		List<CoursePublicDTO> coursePublicDTOs = new ArrayList<>();
+
+		
+		if (!coursesFromDB.isEmpty()) {
+			for (Course course : coursesFromDB) {
+				CoursePublicDTO sum = findById(course.getId());
+				sum.setTutor(null);
+				coursePublicDTOs.add(sum);
+			}
+		}
+		
+		Page<CoursePublicDTO> pageCoursePublicDTO = new PageImpl<>(coursePublicDTOs, coursesFromDB.getPageable(), coursesFromDB.getTotalElements());
+		
+		return pageCoursePublicDTO;
+	}
+
+	public Page<CoursePublicDTO> findByTechPage(Optional<String> tech, Pageable pageable) {
+		Page<Course> coursesFromDB = courseRepository.findByTechStacks_TechStackContaining(tech.get(), pageable);
+		
+		List<CoursePublicDTO> coursePublicDTOs = new ArrayList<>();
+
+		if (!coursesFromDB.isEmpty()) {
+			for (Course course : coursesFromDB) {
+				CoursePublicDTO sum = findById(course.getId());
+				sum.setTutor(null);
+				coursePublicDTOs.add(sum);
+			}
+		}
+		
+		Page<CoursePublicDTO> pageCoursePublicDTO = new PageImpl<>(coursePublicDTOs, coursesFromDB.getPageable(), coursesFromDB.getTotalElements());
+		
+		return pageCoursePublicDTO;
 	}
 }

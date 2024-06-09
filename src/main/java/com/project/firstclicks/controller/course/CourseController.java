@@ -1,6 +1,7 @@
 package com.project.firstclicks.controller.course;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,9 +33,21 @@ public class CourseController {
 		return courseService.findLast6Courses();
 	}
 	
+	
+	
 	@GetMapping("/search")
-	public List<CoursePublicDTO> getCoursesById(@RequestParam  String name) {
-		return courseService.findByName(name);
+	public Page<CoursePublicDTO> pagiPage(@PageableDefault(sort = "updatedDate", size = 6, direction = Direction.DESC) Pageable pageable,
+								@RequestParam Optional<String> name, @RequestParam Optional<String> tech) {
+		
+		Page<CoursePublicDTO> searchPage = null;
+		if (name.isPresent() && !tech.isPresent()) {
+			searchPage = courseService.findByNamePage(name, pageable);
+		} else {
+			searchPage = courseService.findByTechPage(tech, pageable);
+		}
+		
+		
+		return searchPage;
 	}
 	
 	@GetMapping
