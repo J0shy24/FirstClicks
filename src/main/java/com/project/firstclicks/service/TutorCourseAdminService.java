@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import com.project.firstclicks.dto.CourseDTO;
 import com.project.firstclicks.dto.CoursePublicDTO;
-import com.project.firstclicks.dto.TutorProfilePublic;
 import com.project.firstclicks.entity.AppUser;
 import com.project.firstclicks.entity.Course;
 import com.project.firstclicks.entity.TechStack;
@@ -25,6 +24,7 @@ import com.project.firstclicks.repository.AppUserRepository;
 import com.project.firstclicks.repository.CourseRepository;
 import com.project.firstclicks.repository.TechStackRepository;
 import com.project.firstclicks.repository.TutorRepository;
+import com.project.firstclicks.service.CourseService;
 
 import io.swagger.v3.oas.models.security.SecurityScheme.In;
 import jakarta.transaction.Transactional;
@@ -38,6 +38,7 @@ public class TutorCourseAdminService {
 	private ModelMapper modelMapper;
 	private AppUserRepository userRepository;
 	private TutorRepository tutorRepository;
+	private CourseService courseService;
 	
 	private Tutor GetTutorByTutorId (Integer tutorId) {
 		return tutorRepository.findById(tutorId)
@@ -56,7 +57,7 @@ public class TutorCourseAdminService {
 		List<CoursePublicDTO> convertPublicCourses = new ArrayList<>();
 		
 		for (Course course : coursesFromDb) {
-			CoursePublicDTO sum = new CoursePublicDTO();
+			CoursePublicDTO sum = courseService.findById(course.getId());
 			modelMapper.map(course, sum);
 			sum.setTechStack(techStackRepository.findByCourse(course));
 			convertPublicCourses.add(sum);
@@ -76,23 +77,17 @@ public class TutorCourseAdminService {
 	
 	public CoursePublicDTO create(CourseDTO courseDTO, Integer tutorid) {
 		Course course = new Course();
-		CoursePublicDTO convertCourseFromDBToCoursePublicDTO = new CoursePublicDTO();
+		
 		
 		modelMapper.map(courseDTO, course);
-		
-//		course.setName(courseDTO.getName());
-//		course.setDescription(courseDTO.getDescription());
-//		course.setCoverPath(courseDTO.getCoverPath());
-//		course.setLevel(courseDTO.getLevel());
-//		course.setTechStack(null);
 		course.setCreatedDate(Timestamp.valueOf(LocalDateTime.now()));
 		course.setUpdatedDate(Timestamp.valueOf(LocalDateTime.now()));
 		course.setIsActive(true);
 		course.setTutorId(GetTutorByTutorId(tutorid));
 		Course SaveCourse = courseRepository.save(course);
 		
-		Set<TechStack> tech_sum = saveTechStack(courseDTO,SaveCourse);
-	//	SaveCourse.setTechStacks(tech_sum);
+		
+
 		
 		return findByIdDTO(SaveCourse.getId(), tutorid);
 	}

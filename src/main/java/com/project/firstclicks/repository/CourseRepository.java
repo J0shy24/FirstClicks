@@ -24,11 +24,15 @@ public interface CourseRepository extends JpaRepository<Course, Integer>{
 	
 	List<Course> findByNameContaining(String name);
 	
+	Page<Course> findByNameContaining(String name, Pageable pageable);
+	
 	Optional<Course> findByIdAndTutorId(Integer id, Tutor tutorId);
 	
 	List<Course> findByTutorId(Tutor tutorId);
 	
 	Page<Course> findAllByTutorId(Pageable pabeable, Tutor tutorId);
+	
+	Page<Course> findByTechStacks_TechStackContaining(String name, Pageable pageable);
 	
 	//List<CoursePublicDTO> findTop6ByOrderByCreatedDate();
 		

@@ -11,4 +11,5 @@ public class TutorProfilePublic {
 	String lastName;
 	String photoRoute;
 	String description;
+	Integer phoneNumber;
 }

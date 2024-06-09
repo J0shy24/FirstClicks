@@ -15,5 +15,6 @@ public class TutorPrivateProfileDTO {
 	String description;
 	String email;
 	String gender;
+	Integer phoneNumber;
 	boolean isEnabled;
 }

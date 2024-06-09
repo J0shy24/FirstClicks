@@ -91,9 +91,9 @@ public class AuthenticationService {
 				if(request.getPhotoRoute().isEmpty()||request.getPhotoRoute().isBlank()||request.getPhotoRoute()==null) {
 	
 					if(newTutor.getGender()=="Hombre"||newTutor.getGender()=="HOMBRE"||newTutor.getGender()=="hombre") {
-						newTutor.setPhotoRoute("/mediafiles/male_tutor_icon.png");
+						newTutor.setPhotoRoute("female_tutor_icon.png");
 					}else {
-						newTutor.setPhotoRoute("/mediafiles/female_tutor_icon.png");
+						newTutor.setPhotoRoute("male_tutor_icon.png");
 					}
 
 				}else {
@@ -126,9 +126,9 @@ public class AuthenticationService {
 				
 				if(request.getPhotoRoute().isEmpty()||request.getPhotoRoute().isBlank()||request.getPhotoRoute()==null) {
 					if(newStudent.getGender()=="Hombre"||newStudent.getGender()=="HOMBRE"||newStudent.getGender()=="hombre") {
-						newStudent.setPhotoRoute("/mediafiles/male_student_icon.png");
+						newStudent.setPhotoRoute("male_student_icon.png");
 					}else {
-						newStudent.setPhotoRoute("/mediafiles/female_student_icon.png");
+						newStudent.setPhotoRoute("female_student_icon.png");
 					}
 				}else {
 					newStudent.setPhotoRoute(request.getPhotoRoute());
