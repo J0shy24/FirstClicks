@@ -28,7 +28,7 @@ public class RequestUserClientDTO {
 	private String lastName;
 	private LocalDate dateOfBirth;
 	private Integer roleId;
-	private Integer phoneNumber;
+	private String phoneNumber;
 	private String gender;
 	@NotEmpty(message = "Email Obligatorio")
 	@NotBlank(message = "Email Obligatorio")
