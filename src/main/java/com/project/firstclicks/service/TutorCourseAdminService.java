@@ -86,13 +86,13 @@ public class TutorCourseAdminService {
 		course.setTutorId(GetTutorByTutorId(tutorid));
 		Course SaveCourse = courseRepository.save(course);
 		
-		
+		saveTechStack(courseDTO, SaveCourse);
 
 		
 		return findByIdDTO(SaveCourse.getId(), tutorid);
 	}
 
-	private Set<TechStack> saveTechStack(CourseDTO courseDTO, Course Save) {
+	private void saveTechStack(CourseDTO courseDTO, Course Save) {
 		Set<TechStack> tech_sum = new HashSet<TechStack>();
 		TechStack techStackNew = new TechStack();
 		
@@ -104,7 +104,7 @@ public class TutorCourseAdminService {
 			techStackNew.setCourse(courseSave);
 			tech_sum.add(techStackRepository.save(techStackNew));
 		}
-		return tech_sum;
+		
 	}
 
 	public Course findById (Integer id, Integer tutorId) {

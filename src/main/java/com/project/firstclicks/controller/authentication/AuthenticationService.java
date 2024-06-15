@@ -90,10 +90,10 @@ public class AuthenticationService {
 				
 				if(request.getPhotoRoute().isEmpty()||request.getPhotoRoute().isBlank()||request.getPhotoRoute()==null) {
 	
-					if(newTutor.getGender()=="Hombre"||newTutor.getGender()=="HOMBRE"||newTutor.getGender()=="hombre") {
-						newTutor.setPhotoRoute("female_tutor_icon.png");
-					}else {
+					if(newTutor.getGender().equals("Hombre")||newTutor.getGender().equals("HOMBRE")||newTutor.getGender().equals("hombre")) {
 						newTutor.setPhotoRoute("male_tutor_icon.png");
+					}else {
+						newTutor.setPhotoRoute("female_tutor_icon.png");
 					}
 
 				}else {
@@ -125,7 +125,7 @@ public class AuthenticationService {
 				newStudent.setEnabled(false);
 				
 				if(request.getPhotoRoute().isEmpty()||request.getPhotoRoute().isBlank()||request.getPhotoRoute()==null) {
-					if(newStudent.getGender()=="Hombre"||newStudent.getGender()=="HOMBRE"||newStudent.getGender()=="hombre") {
+					if(newStudent.getGender().equals("Hombre")||newStudent.getGender().equals("HOMBRE")||newStudent.getGender().equals("hombre")) {
 						newStudent.setPhotoRoute("male_student_icon.png");
 					}else {
 						newStudent.setPhotoRoute("female_student_icon.png");
